@@ -48,6 +48,7 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
+
         <!--     fastjson 转json   -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -88,6 +89,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.3.0</version>
         </dependency>
     </dependencies>
 
