@@ -23,6 +23,8 @@ public class JedisTest {
             System.out.println("循环获取"+key);
         }
 
+
+
         // 删除
         jedis.del("age");
 
