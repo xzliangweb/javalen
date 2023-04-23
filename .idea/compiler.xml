@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="javalen" />
         <module name="javaLen" />
         <module name="itheima_reggie_take" />
       </profile>
@@ -16,6 +17,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="javaLen" options="-parameters" />
+      <module name="javalen" options="-parameters" />
     </option>
   </component>
 </project>

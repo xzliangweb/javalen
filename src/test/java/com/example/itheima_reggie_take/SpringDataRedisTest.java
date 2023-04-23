@@ -4,10 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.connection.DataType;
+import org.springframework.data.redis.core.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -102,7 +100,78 @@ public class SpringDataRedisTest {
     @Test
     public void testSet() {
         SetOperations setOperations = redisTemplate.opsForSet();
+        // 存值
+        setOperations.add("myset", "a", "b", "c", "d");
+        // 取值
+        Set<String> myset = setOperations.members("myset");
+
+        for (String o : myset) {
+            System.out.println("第一次取值" + o);
+        }
+
+        // 删除成员
+        setOperations.remove("myset", "a", "b");
+
+        // 取值
+        Set<String> myset1 = setOperations.members("myset");
+
+        for (String o : myset1) {
+            System.out.println("第二次取值" + o);
+        }
 
     }
 
+    /**
+     * 操作Zset类型的数据
+     * 有序集合
+     * 唯一的
+     */
+    @Test
+    public void testZset() {
+        ZSetOperations zSetOperations = redisTemplate.opsForZSet();
+        //存值
+        zSetOperations.add("myZset", "a", 10.0);
+        zSetOperations.add("myZset", "b", 12.0);
+        zSetOperations.add("myZset", "c", 9.0);
+        zSetOperations.add("myZset", "a", 10.0);
+        //取值
+        Set<String> myZset = zSetOperations.range("myZset", 0, -1);
+        for (String s : myZset) {
+            System.out.println(s);
+        }
+        //修改分数
+        zSetOperations.incrementScore("myZset", "b", 20.0);
+        myZset = zSetOperations.range("myZset", 0, -1);
+        for (String s : myZset) {
+            System.out.println("修改分数后---" + s);
+        }
+        //删除成员
+        zSetOperations.remove("myZset", "a", "b");
+        myZset = zSetOperations.range("myZset", 0, -1);
+        for (String s : myZset) {
+            System.out.println("删除后分数---" + s);
+        }
+    }
+
+    /**
+     * 通用操作，针对不同的数据类型都可以操作
+     */
+    @Test
+    public void testCommon() {
+        //获取redis中所有的key
+        Set<String> keys = redisTemplate.keys("*");
+        for (String key : keys) {
+            System.out.println(key);
+        }
+        //判断某个key是否存在
+        Boolean itcast = redisTemplate.hasKey("itcast");
+        System.out.println(itcast);
+        //删除指定key
+        Boolean myZset = redisTemplate.delete("myZset");
+        System.out.println(myZset);
+
+        //获取指定key 对应的value的数据类型
+        DataType dataType = redisTemplate.type("myset");
+        System.out.println(dataType.name());
+    }
 }
